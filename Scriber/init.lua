@@ -35,6 +35,7 @@ local TopInvSlot = 22 + mq.TLO.Me.NumBagSlots()
 local MinLevel = 1
 local MaxLevel = mq.TLO.Me.Level()
 local scribe_level_range = {1, mq.TLO.Me.Level()}
+local portsOnly = false
 local DoLoop = true
 local Scribing = false
 local umbral = false
@@ -51,6 +52,15 @@ local scribe_inv = false
 local scribe_switch = true
 local pause_switch = false
 local buy_CloudyPots = true
+
+local portKeyWords = {
+	WIZ = {
+		"Anchor Ring", "Anchor Push", "Teleport", "Translocate", "Gate", "Portal", "Alter Plane", "Evacuate", "Relocation"
+	},
+	DRU = {
+		"Anchor Ring", "Anchor Push", "Teleport", "Ring of", "Circle of", "Zephyr", "Succor", "Wind of the"
+	}
+}
 -- --------------------------------------------------------------------------------------------
 -- SUB: Event_NotGold
 -- --------------------------------------------------------------------------------------------
@@ -202,6 +212,19 @@ local function BuySpells()
 				Write.Info('\aoUnable to use \ar'..spellName..'\ao because of deity restrictions')
 			    
 				goto continue
+			end
+			
+			if (portsOnly) then
+				local isPort = false
+				for index, str in pairs(portKeyWords[MyClassSN]) do
+					if (string.find(spellName, str)) then
+						isPort = true;
+						break
+					end
+				end
+				if (not isPort) then
+					goto continue
+				end
 			end
 
 			mq.TLO.Merchant.SelectItem("="..merchantItem.Name())
@@ -788,7 +811,11 @@ local function Rouneq()
         end
 
         if Merchant_Open() then
-            Write.Info('\aoBuying all \ag'..MyClass..'\ao spells/tomes for levels \ag'..MinLevel..'\ao to \ag'..MaxLevel)
+			if (portsOnly) then
+				Write.Info('\aoBuying only \ag'..MyClass..'\ao port spells for levels \ag'..MinLevel..'\ao to \ag'..MaxLevel)
+			else
+				Write.Info('\aoBuying all \ag'..MyClass..'\ao spells/tomes for levels \ag'..MinLevel..'\ao to \ag'..MaxLevel)
+			end
 
             BuySpells()
 
@@ -1735,6 +1762,11 @@ local function bind_scriber(cmd, cmd2)
 		else
 			Write.Info("Buy Cloudy pots - off")
 		end
+		if portsOnly then
+			Write.Info("Only scribe ports - on")
+		else
+			Write.Info("Only scribe ports - off")
+		end
 
 		if sendmehome then
 			Write.Info("Return - On")
@@ -1932,6 +1964,9 @@ local function ScriberGUI()
 				selfbuy = ImGui.Checkbox("I want to buy my own spells", selfbuy)
 				sendmehome = ImGui.Checkbox("Send me to my bind point", sendmehome)
 				buy_CloudyPots = ImGui.Checkbox("Buy Cloudy Potions", buy_CloudyPots)
+				ImGui.BeginDisabled(not (MyClassSN == "DRU" or MyClassSN == "WIZ"))
+					portsOnly = ImGui.Checkbox("Only purchase and scribe portal type spells (wiz/dru only)", portsOnly)
+				ImGui.EndDisabled()
 			end
 			if ImGui.CollapsingHeader('Guildhall clicky and Keyring Options') then
 				if ImGui.BeginTable("GuildClicky",2) then
