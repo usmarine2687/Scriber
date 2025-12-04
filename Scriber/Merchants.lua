@@ -281,7 +281,25 @@ local MerchLookup = {
     toe = {
         WIZ = {'Folt Primcaller'},
         DRU = {'Folt Primcaller'}
-    }
+    },
+	embattledpogrowth = {
+		WAR = {["Halthina Brassmight"] = {SoRSide = true}, ["Nar Gaka"] = {SoRSide = false}},
+        PAL = {["Etlamar Mindhul"] = {SoRSide = true}, ["Etlamar Mindhul"] = {SoRSide = false}},
+        SHD = {["Callae Abellis"] = {SoRSide = true}, ["Vydria The Twisted"] = {SoRSide = false}},
+        BST = {["Sikrain Dahjik"] = {SoRSide = true}, ["Kukanu Brungrek"] = {SoRSide = false}},
+        BER = {["Halthina Brassmight"] = {SoRSide = true}, ["Nar Gaka"] = {SoRSide = false}},
+        MNK = {["Halthina Brassmight"] = {SoRSide = true}, ["Nar Gaka"] = {SoRSide = false}},
+        RNG = {["Keganie Whisperleaf"] = {SoRSide = true}, ["Meumarik Haledryn"] = {SoRSide = false}},
+        ROG = {["Halthina Brassmight"] = {SoRSide = true}, ["Nar Gaka"] = {SoRSide = false}},
+        MAG = {["Ninadali Lefarynn"] = {SoRSide = true}, ["Ednzu Selbelim"] = {SoRSide = false}},
+        NEC = {["Callae Abellis"] = {SoRSide = true}, ["Vydria The Twisted"] = {SoRSide = false}},
+        WIZ = {["Ninadali Lefarynn"] = {SoRSide = true}, ["Ednzu Selbelim"] = {SoRSide = false}, 'Tulanarynn'},
+        BRD = {["Lulamani Rouge"] = {SoRSide = true}, ["Calthdomn Burt"] = {SoRSide = false}},
+        ENC = {["Lulamani Rouge"] = {SoRSide = true}, ["Calthdomn Burt"] = {SoRSide = false}},
+        CLR = {["Etlamar Mindhul"] = {SoRSide = true}, ["Etlamar Mindhul"] = {SoRSide = false}},
+        DRU = {["Keganie Whisperleaf"] = {SoRSide = true}, ["Meumarik Haledryn"] = {SoRSide = false}, 'Tulanarynn'},
+        SHM = {["Sikrain Dahjik"] = {SoRSide = true}, ["Kukanu Brungrek"] = {SoRSide = false}}
+	}
 }
 
 return MerchLookup
