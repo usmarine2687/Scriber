@@ -36,6 +36,7 @@ local MinLevel = 1
 local MaxLevel = mq.TLO.Me.Level()
 local scribe_level_range = {1, mq.TLO.Me.Level()}
 local portsOnly = false
+local SoRSide = true -- true -> good, false -> evil
 local DoLoop = true
 local Scribing = false
 local umbral = false
@@ -43,6 +44,7 @@ local cobalt = false
 local stratos = false
 local laurion = false
 local hodstock = false
+local embattledpogrowth = false
 local Open, ShowUI = true, true
 local stop_scribe = true
 local selfbuy = false
@@ -947,6 +949,50 @@ local function Vendloop()
 				DoLoop = true
 			end
 		end
+	elseif GetMyZone() == 'embattledpogrowth' then
+		mq.delay(1000)
+		Write.Info('\aoVerified \ag%s', GetMyZone())
+		if SoRSide == true then
+			Write.Info('\aoUsing the GOOD side')
+		else
+			Write.Info('\aoUsing the EVIL side')
+		end
+		for merch, whichsidetable in pairs(Vendlist[GetMyZone()][MyClassSN]) do
+			if (whichsidetable.SoRSide == SoRSide) then
+				Write.Info('Naving to \ag%s', merch)
+				mq.cmdf('/nav spawn npc %s', merch)
+					--traveling, please wait --
+				while Am_I_Moving() do
+					if (mq.TLO.Spawn(merch).Distance3D() < 20) then
+						mq.cmd('/nav stop')
+					end
+					mq.delay(50)
+				end
+				if (mq.TLO.Spawn(merch).Distance3D() < 30) then
+					Write.Info('\aoTargeting \ag%s', merch)
+					mq.cmdf('/target %s', merch)
+					mq.delay(1500)
+					Write.Info('\aoClicking \ag%s', merch)
+					mq.cmd('/click right target')
+				end
+				while not Merchant_Open() do
+					mq.delay(500)
+				end
+				if selfbuy then
+					Write.Info('\aoYou may now buy your spells. We will continue moving when you \arclose the merchant window.')
+					while Merchant_Open() do
+						mq.delay(500)
+					end
+				else
+					Rouneq()
+				end
+				
+				mq.delay(1000)
+				DoLoop = true
+			end
+		end
+	
+	
 	else
         if (GetMyZone() == 'ethernere') and (ETWKClass(lmovers) == true) then
             CastInvis()
@@ -1589,6 +1635,20 @@ local function TOE()
 		end
 	end
 end
+local function SOR()
+	if mq.TLO.Me.HaveExpansion(32)() == false then
+		Write.Info("\arYou do not have the expansion for this zone!")
+		mq.cmd('/lua stop scriber')
+	end
+	if SoRSide == nil then
+		Write.Info("\arYou must pick a good or evil side in Basic Options")
+		mq.cmd('/lua stop scriber')
+	elseif (MinLevel <= 130) and (MaxLevel >= 126) == true then
+		guildhall('embattledpogrowth')
+        Trav('embattledpogrowth')
+		Home()
+    end
+end
 
 
 local spell_locations = {
@@ -1700,6 +1760,12 @@ local spell_locations = {
 		max_level = 125,
 		selected = true,
 		action = TOE
+	}, {
+		name = "Scarred Grove",
+		min_level = 126,
+		max_level = 130,
+		selected = true,
+		action = SOR
 	}
 }
 
@@ -1930,7 +1996,7 @@ local function ScriberGUI()
 		ImGui.SetWindowSize(500, 500, ImGuiCond.Once)
 		Open, ShowUI = ImGui.Begin('Scriber - Letting us do the work for you, one spell at a time! (v4.0.0)', Open)
 		if ShowUI then
-			scribe_level_range, levels_selected = ImGui.SliderInt2("Levels of Scribing", scribe_level_range, 1, 125)
+			scribe_level_range, levels_selected = ImGui.SliderInt2("Levels of Scribing", scribe_level_range, 1, 130)
 			if levels_selected then set_location_options(spell_locations, scribe_level_range) end
 			if ((scribe_level_range[1] > scribe_level_range[2]) or (scribe_level_range[2] < scribe_level_range[1])) then scribe_level_range[1] = scribe_level_range[2] end
 			if scribe_switch then
@@ -1964,6 +2030,7 @@ local function ScriberGUI()
 				selfbuy = ImGui.Checkbox("I want to buy my own spells", selfbuy)
 				sendmehome = ImGui.Checkbox("Send me to my bind point", sendmehome)
 				buy_CloudyPots = ImGui.Checkbox("Buy Cloudy Potions", buy_CloudyPots)
+				SoRSide = ImGui.Checkbox("Use Shattering of Ro Good Side", SoRSide)
 				ImGui.BeginDisabled(not (MyClassSN == "DRU" or MyClassSN == "WIZ"))
 					portsOnly = ImGui.Checkbox("Only purchase and scribe portal type spells (wiz/dru only)", portsOnly)
 				ImGui.EndDisabled()
