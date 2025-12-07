@@ -286,7 +286,7 @@ local MerchLookup = {
 		WAR = {["Halthina Brassmight"] = {SoRSide = true}, ["Nar Gaka"] = {SoRSide = false}},
         PAL = {["Etlamar Mindhul"] = {SoRSide = true}, ["Etlamar Mindhul"] = {SoRSide = false}},
         SHD = {["Callae Abellis"] = {SoRSide = true}, ["Vydria The Twisted"] = {SoRSide = false}},
-        BST = {["Sikrain Dahjik"] = {SoRSide = true}, ["Kukanu Brungrek"] = {SoRSide = false}},
+        BST = {["Sikraln Dahjik"] = {SoRSide = true}, ["Kukanu Brungrek"] = {SoRSide = false}},
         BER = {["Halthina Brassmight"] = {SoRSide = true}, ["Nar Gaka"] = {SoRSide = false}},
         MNK = {["Halthina Brassmight"] = {SoRSide = true}, ["Nar Gaka"] = {SoRSide = false}},
         RNG = {["Keganie Whisperleaf"] = {SoRSide = true}, ["Meumarik Haledryn"] = {SoRSide = false}},
@@ -298,7 +298,7 @@ local MerchLookup = {
         ENC = {["Lulamani Rouge"] = {SoRSide = true}, ["Calthdomn Burt"] = {SoRSide = false}},
         CLR = {["Etlamar Mindhul"] = {SoRSide = true}, ["Etlamar Mindhul"] = {SoRSide = false}},
         DRU = {["Keganie Whisperleaf"] = {SoRSide = true}, ["Meumarik Haledryn"] = {SoRSide = false}, 'Tulanarynn'},
-        SHM = {["Sikrain Dahjik"] = {SoRSide = true}, ["Kukanu Brungrek"] = {SoRSide = false}}
+        SHM = {["Sikraln Dahjik"] = {SoRSide = true}, ["Kukanu Brungrek"] = {SoRSide = false}}
 	}
 }
 
